@@ -1,0 +1,11 @@
+{
+  "name": "echo-bytes",
+  "version": "1.0.0",
+  "description": "ECHO BYTES – College Radio Announcement Platform",
+  "scripts": {
+    "start":   "node backend/server.js",
+    "install-deps": "cd backend && npm install"
+  },
+  "keywords": ["college", "radio", "announcements", "portal"],
+  "author": "SHAIK IRFAN"
+}

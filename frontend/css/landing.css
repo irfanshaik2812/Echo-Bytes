@@ -1,0 +1,298 @@
+/* ============================================================
+   ECHO BYTES – Landing Page Styles
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:   #c9a227;
+  --blue:   #2e9fff;
+  --purple: #7b2fff;
+  --dark:   #06030e;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── PAGE SHELL ── */
+.landing-page {
+  background: var(--dark);
+  color: #ede6ff;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── PARTICLE CANVAS ── */
+#landing-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── AMBIENT ORBS ── */
+.landing-orbs { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+.l-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+}
+.l-orb-1 {
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(108,40,200,0.55) 0%, transparent 65%);
+  top: -25%; left: -18%;
+  animation: lOrbDrift 12s ease-in-out infinite;
+}
+.l-orb-2 {
+  width: 650px; height: 650px;
+  background: radial-gradient(circle, rgba(46,159,255,0.35) 0%, transparent 65%);
+  bottom: -18%; right: -12%;
+  animation: lOrbDrift 15s ease-in-out infinite reverse;
+}
+.l-orb-3 {
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, rgba(201,162,39,0.22) 0%, transparent 65%);
+  top: 45%; left: 52%;
+  animation: lOrbPulse 8s ease-in-out infinite;
+}
+@keyframes lOrbDrift {
+  0%,100% { transform: translate(0,0) rotate(0deg); }
+  33%      { transform: translate(30px,-50px) rotate(6deg); }
+  66%      { transform: translate(-20px,30px) rotate(-4deg); }
+}
+@keyframes lOrbPulse {
+  0%,100% { opacity: 0.25; transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(1.18); }
+}
+
+/* ── CONTENT STACK ── */
+.landing-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  text-align: center;
+  padding: 40px 24px 80px;
+}
+
+/* ── SIGNAL BARS ── */
+.landing-signal {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 52px;
+}
+.l-bar {
+  width: 4px;
+  border-radius: 2px;
+  background: var(--gold);
+  opacity: 0;
+  transform-origin: bottom;
+  animation: lBarWave 1.6s ease-in-out infinite;
+}
+.l-bar:nth-child(1) { height: 15px; animation-delay: 0.00s; }
+.l-bar:nth-child(2) { height: 25px; animation-delay: 0.10s; }
+.l-bar:nth-child(3) { height: 37px; animation-delay: 0.20s; }
+.l-bar:nth-child(4) { height: 50px; animation-delay: 0.30s; }
+.l-bar:nth-child(5) { height: 43px; animation-delay: 0.25s; }
+.l-bar:nth-child(6) { height: 52px; animation-delay: 0.35s; }
+.l-bar:nth-child(7) { height: 43px; animation-delay: 0.20s; }
+.l-bar:nth-child(8) { height: 50px; animation-delay: 0.15s; }
+.l-bar:nth-child(9) { height: 37px; animation-delay: 0.10s; }
+.l-bar:nth-child(10){ height: 25px; animation-delay: 0.05s; }
+.l-bar:nth-child(11){ height: 15px; animation-delay: 0.00s; }
+@keyframes lBarWave {
+  0%,100% { transform: scaleY(0.25); opacity: 0.2; }
+  50%      { transform: scaleY(1);   opacity: 1;   }
+}
+
+/* ── LOGO IMAGE ── */
+.landing-logo-wrap {
+  opacity: 0;
+  animation: fadeSlideUp 0.9s ease forwards;
+  animation-delay: 0.2s;
+}
+.landing-logo-img {
+  height: 72px;
+  width: auto;
+  filter: brightness(1.15);
+}
+
+/* ── TITLE LETTER ANIMATION ── */
+.landing-title-wrap { overflow: visible; }
+
+.landing-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(56px, 13vw, 130px);
+  font-weight: 900;
+  letter-spacing: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.lt-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(70px) scale(0.75) rotateX(30deg);
+  animation: ltReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(0.4s + var(--i) * 0.07s);
+  /* ECHO — electric blue */
+  background: linear-gradient(145deg, #52c5ff 0%, #2e9fff 50%, #0077cc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.lt-letter.lt-bytes {
+  /* BYTES — gold→purple */
+  background: linear-gradient(145deg, #c9a227 0%, #a259ff 60%, #7b2fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.lt-space { display: inline-block; width: 0.28em; }
+
+@keyframes ltReveal {
+  to { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
+}
+
+/* Glow pulse that fires after all letters land */
+.landing-title::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(ellipse 60% 30% at 50% 60%,
+    rgba(201,162,39,0.18) 0%, transparent 70%);
+  z-index: -1;
+  opacity: 0;
+  animation: titleGlow 1.2s ease forwards;
+  animation-delay: 1.5s;
+}
+@keyframes titleGlow {
+  to { opacity: 1; }
+}
+
+/* ── TAGLINE ── */
+.landing-tagline {
+  font-size: clamp(11px, 1.8vw, 14px);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: rgba(237, 230, 255, 0.38);
+  font-weight: 400;
+  opacity: 0;
+  animation: fadeSlideUp 0.9s ease forwards;
+  animation-delay: 1.35s;
+  margin-top: -6px;
+}
+
+/* ── ENTER BUTTON ── */
+.landing-btn-wrap {
+  opacity: 0;
+  animation: fadeSlideUp 0.9s ease forwards;
+  animation-delay: 1.75s;
+  margin-top: 16px;
+  position: relative;
+}
+
+.landing-enter-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 56px;
+  background: transparent;
+  border: 2px solid var(--gold);
+  border-radius: 100px;
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 7px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  z-index: 1;
+}
+/* Gold fill on hover */
+.landing-enter-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #c9a227, #a07818);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 100px;
+}
+.landing-enter-btn:hover::before { opacity: 1; }
+.landing-enter-btn:hover {
+  color: #07040f;
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 0 10px 50px rgba(201, 162, 39, 0.55), 0 0 0 1px rgba(201,162,39,0.3);
+}
+.landing-enter-btn:hover svg { stroke: #07040f; }
+.landing-enter-btn:active { transform: scale(0.99) translateY(0); }
+
+.enter-btn-label,
+.landing-enter-btn svg { position: relative; z-index: 1; }
+
+/* Outer pulsing ring */
+.enter-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 100px;
+  border: 1.5px solid rgba(201, 162, 39, 0.25);
+  pointer-events: none;
+  animation: ringPulse 2.8s ease-in-out infinite;
+  animation-delay: 2.4s;
+}
+.enter-ring-2 {
+  inset: -14px;
+  border-color: rgba(201, 162, 39, 0.12);
+  animation-delay: 2.9s;
+}
+@keyframes ringPulse {
+  0%,100% { transform: scale(1);    opacity: 0.5; }
+  50%      { transform: scale(1.04); opacity: 1;   }
+}
+
+/* ── FOOTER ── */
+.landing-footer {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: rgba(237, 230, 255, 0.18);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 10;
+  opacity: 0;
+  animation: fadeSlideUp 0.9s ease forwards;
+  animation-delay: 2.2s;
+  white-space: nowrap;
+}
+
+/* ── SHARED ANIMATION ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 540px) {
+  .landing-title  { font-size: 44px; letter-spacing: 8px; }
+  .lt-space       { width: 0.2em; }
+  .landing-enter-btn { padding: 16px 40px; font-size: 13px; letter-spacing: 5px; }
+  .landing-logo-img  { height: 54px; }
+}

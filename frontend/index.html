@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECHO BYTES – Sign In</title>
+  <meta name="description" content="ECHO BYTES: The College Radio Announcement Platform. Sign in or create your account.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body class="auth-page">
+
+  <!-- Ambient glow background -->
+  <div class="auth-bg" aria-hidden="true">
+    <div class="auth-orb auth-orb-1"></div>
+    <div class="auth-orb auth-orb-2"></div>
+    <div class="auth-orb auth-orb-3"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="auth-header">
+    <div class="auth-header-logo">
+      <img src="/assets/logo.png" alt="ECHO BYTES" class="header-logo-img">
+    </div>
+    <button class="theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark/light mode">
+      <svg id="ti-sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg id="ti-moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span id="theme-label">Dark Mode</span>
+    </button>
+  </header>
+
+  <!-- Main -->
+  <main class="auth-main">
+    <div class="auth-container">
+      <!-- Hero -->
+      <div class="auth-hero">
+        <h1 class="auth-hero-logo gold-text">ECHO BYTES</h1>
+        <p class="auth-hero-tagline">College Radio Announcement Platform</p>
+        <div class="auth-signal" aria-hidden="true">
+          <div class="signal-bar"></div><div class="signal-bar"></div>
+          <div class="signal-bar"></div><div class="signal-bar"></div>
+          <div class="signal-bar"></div><div class="signal-bar"></div>
+          <div class="signal-bar"></div>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="auth-card" role="main">
+        <!-- Tabs -->
+        <div class="auth-tabs" role="tablist" aria-label="Authentication">
+          <button class="auth-tab active" id="tab-login" role="tab" aria-selected="true" aria-controls="form-login" onclick="switchTab('login')">Sign In</button>
+          <button class="auth-tab" id="tab-register" role="tab" aria-selected="false" aria-controls="form-register" onclick="switchTab('register')">Create Account</button>
+        </div>
+
+        <!-- Form area -->
+        <div class="auth-form-container">
+
+          <!-- LOGIN FORM -->
+          <div id="form-login" class="auth-form active" role="tabpanel" aria-labelledby="tab-login">
+            <h2 class="auth-form-title">Welcome Back</h2>
+            <p class="auth-form-subtitle">Sign in to access your dashboard</p>
+            <div id="login-error" class="auth-error" role="alert" aria-live="polite"></div>
+            <form id="login-form" onsubmit="handleLogin(event)" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="login-username">Username</label>
+                <input type="text" id="login-username" class="form-control" placeholder="Your username" required autocomplete="username">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="login-password">Password</label>
+                <div class="pw-wrap">
+                  <input type="password" id="login-password" class="form-control" placeholder="Your password" required autocomplete="current-password">
+                  <button type="button" class="pw-toggle" onclick="togglePw('login-password')" aria-label="Show/hide password">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button type="submit" id="login-btn" class="btn btn-primary auth-submit-btn" aria-label="Sign in">
+                <span id="login-btn-text">Sign In</span>
+                <span id="login-spinner" class="spinner hidden" aria-hidden="true"></span>
+              </button>
+            </form>
+          </div>
+
+          <!-- REGISTER FORM -->
+          <div id="form-register" class="auth-form" role="tabpanel" aria-labelledby="tab-register">
+            <h2 class="auth-form-title">Create Account</h2>
+            <p class="auth-form-subtitle">Join the ECHO BYTES platform</p>
+            <div id="reg-error" class="auth-error" role="alert" aria-live="polite"></div>
+            <form id="register-form" onsubmit="handleRegister(event)" novalidate>
+
+              <div class="form-group">
+                <label class="form-label" for="reg-username">Username</label>
+                <input type="text" id="reg-username" class="form-control" placeholder="Your assigned username" required autocomplete="username">
+              </div>
+
+              <!-- Admin-specific fields (shown dynamically) -->
+              <div id="admin-fields" class="hidden">
+                <div class="auth-fields-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="reg-manager-id">Manager ID</label>
+                    <input type="text" id="reg-manager-id" class="form-control" placeholder="Manager ID" autocomplete="off">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="reg-role-post">Role / Post</label>
+                    <input type="text" id="reg-role-post" class="form-control" placeholder="e.g. Radio Manager" autocomplete="off">
+                  </div>
+                  <div class="form-group span-full">
+                    <label class="form-label" for="reg-qualification">Qualification / Field</label>
+                    <input type="text" id="reg-qualification" class="form-control" placeholder="e.g. M.Tech, Computer Science" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Student-specific fields (shown dynamically) -->
+              <div id="student-fields" class="hidden">
+                <div class="auth-fields-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="reg-roll">Roll Number</label>
+                    <input type="text" id="reg-roll" class="form-control" placeholder="Roll Number" autocomplete="off">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="reg-class">Class</label>
+                    <input type="text" id="reg-class" class="form-control" placeholder="e.g. B.Tech 3rd Year" autocomplete="off">
+                  </div>
+                  <div class="form-group span-full">
+                    <label class="form-label" for="reg-section">Section</label>
+                    <input type="text" id="reg-section" class="form-control" placeholder="Section (A / B / C...)" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="reg-password">Password</label>
+                <div class="pw-wrap">
+                  <input type="password" id="reg-password" class="form-control" placeholder="Create a strong password" required autocomplete="new-password">
+                  <button type="button" class="pw-toggle" onclick="togglePw('reg-password')" aria-label="Show/hide password">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" id="reg-btn" class="btn btn-primary auth-submit-btn" aria-label="Create account">
+                <span id="reg-btn-text">Create Account</span>
+                <span id="reg-spinner" class="spinner hidden" aria-hidden="true"></span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="auth-card-footer">
+          <footer class="page-footer">Made by SHAIK IRFAN</footer>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast container -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

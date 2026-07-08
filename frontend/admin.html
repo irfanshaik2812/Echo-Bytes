@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECHO BYTES – Admin Panel</title>
+  <meta name="description" content="ECHO BYTES Admin Panel – Manage announcements, analytics, and student reach.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Quill Rich Text Editor -->
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-layout">
+
+  <!-- ═══ HEADER ═══════════════════════════════════════════ -->
+  <header class="admin-header">
+    <div class="admin-logo">
+      <img src="/assets/logo.png" alt="ECHO BYTES" class="header-logo-img">
+    </div>
+    <div class="admin-header-right">
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark/light mode">
+        <svg id="ti-sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="ti-moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="theme-label">Dark Mode</span>
+      </button>
+      <div class="admin-user-pill">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <span id="user-name">Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ BODY ══════════════════════════════════════════════ -->
+  <div class="admin-body">
+
+    <!-- SIDEBAR -->
+    <nav class="admin-sidebar" aria-label="Admin navigation">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <button class="sidebar-item active" data-panel="dashboard" onclick="showPanel('dashboard')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
+        <button class="sidebar-item" data-panel="announcements" onclick="showPanel('announcements')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Announcements
+        </button>
+        <button class="sidebar-item" data-panel="create" onclick="showPanel('create'); resetCreateForm()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          New Announcement
+        </button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Insights</div>
+        <button class="sidebar-item" data-panel="analytics" onclick="showPanel('analytics'); loadAnalyticsList()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Analytics
+        </button>
+        <button class="sidebar-item" data-panel="viewers" onclick="showPanel('viewers'); loadViewersList()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Viewer Tracking
+        </button>
+      </div>
+      <div class="sidebar-footer">
+        <button class="sidebar-logout" onclick="logout()" aria-label="Log out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-content">
+
+      <!-- ─── DASHBOARD PANEL ─────────────────────────────── -->
+      <section id="panel-dashboard" class="admin-panel active" aria-labelledby="dash-title">
+        <div class="panel-title" id="dash-title">Dashboard</div>
+        <div class="panel-subtitle">Overview of your ECHO BYTES platform</div>
+
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card"><div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="stat-value" id="stat-total">—</div><div class="stat-label">Total Announcements</div></div>
+          <div class="stat-card"><div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="stat-value" id="stat-students">—</div><div class="stat-label">Registered Students</div></div>
+          <div class="stat-card"><div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="stat-value" id="stat-views">—</div><div class="stat-label">Total Views</div></div>
+          <div class="stat-card"><div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-value" id="stat-today">—</div><div class="stat-label">Views Today</div></div>
+        </div>
+
+        <div class="panel-title" style="font-size:16px; margin-bottom:14px;">Recent Announcements</div>
+        <div class="data-table-wrap" id="dash-recent-table">
+          <table class="data-table"><thead><tr><th>Title</th><th>Category</th><th>Publish Date</th><th>Views</th></tr></thead>
+          <tbody id="dash-recent-body"><tr><td colspan="4" class="text-center text-muted" style="padding:20px;">Loading…</td></tr></tbody></table>
+        </div>
+      </section>
+
+      <!-- ─── ANNOUNCEMENTS PANEL ─────────────────────────── -->
+      <section id="panel-announcements" class="admin-panel" aria-labelledby="ann-panel-header-title">
+        <div class="flex-between mb-16">
+          <div>
+            <div class="panel-title" id="ann-panel-header-title">Announcements</div>
+            <div class="panel-subtitle">Manage all announcements</div>
+          </div>
+          <button class="btn btn-primary" onclick="showPanel('create'); resetCreateForm()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New
+          </button>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="panel-toolbar">
+          <div class="search-box" style="position:relative;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="search-input" class="form-control search-input" placeholder="Search announcements…" autocomplete="off" oninput="onSearchInput()" onfocus="showSearchHistory()" onblur="hideSearchHistory()">
+            <div id="recent-searches-dropdown" class="recent-searches-dropdown hidden"></div>
+          </div>
+          <select id="filter-category" class="form-control" style="max-width:160px;" onchange="loadAnnouncements()">
+            <option value="All">All Categories</option>
+            <option>General</option><option>Academic</option><option>Events</option>
+            <option>Sports</option><option>Cultural</option><option>Urgent</option>
+          </select>
+          <input type="date" id="filter-date-from" class="form-control" style="max-width:150px;" onchange="loadAnnouncements()">
+          <input type="date" id="filter-date-to" class="form-control" style="max-width:150px;" onchange="loadAnnouncements()">
+          <button class="btn btn-ghost btn-sm" onclick="clearFilters()">Clear</button>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Title</th><th>Category</th><th>Publish Date</th><th>Views</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="ann-table-body"><tr><td colspan="6" class="text-center text-muted" style="padding:30px;">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─── CREATE / EDIT PANEL ────────────────────────── -->
+      <section id="panel-create" class="admin-panel" aria-labelledby="create-title">
+        <div class="panel-title" id="create-title">New Announcement</div>
+        <div class="panel-subtitle" id="create-subtitle">Broadcast to all students</div>
+
+        <div class="create-card">
+          <form id="create-form" onsubmit="submitAnnouncement(event)" novalidate>
+            <input type="hidden" id="edit-ann-id" value="">
+
+            <div class="form-group">
+              <label class="form-label" for="ann-title">Announcement Title *</label>
+              <input type="text" id="ann-title" class="form-control" placeholder="Enter a clear, descriptive title" required>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label" for="ann-category">Category *</label>
+                <select id="ann-category" class="form-control" required>
+                  <option value="General">General</option>
+                  <option value="Academic">Academic</option>
+                  <option value="Events">Events</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Cultural">Cultural</option>
+                  <option value="Urgent">Urgent</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ann-publish-date">Publish Date & Time *</label>
+                <input type="datetime-local" id="ann-publish-date" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Content *</label>
+              <div id="quill-editor"></div>
+            </div>
+
+            <!-- Audio Section -->
+            <div class="form-group">
+              <div class="audio-section">
+                <div class="audio-section-title">🎙️ Audio (Optional)</div>
+                <div class="audio-mode-tabs">
+                  <button type="button" class="audio-mode-btn active" id="mode-record" onclick="setAudioMode('record')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                    Record
+                  </button>
+                  <button type="button" class="audio-mode-btn" id="mode-upload" onclick="setAudioMode('upload')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload File
+                  </button>
+                </div>
+
+                <!-- Record UI -->
+                <div id="record-ui">
+                  <div class="record-ui">
+                    <button type="button" class="record-btn" id="record-btn" onclick="toggleRecording()" title="Start/Stop recording">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
+                    </button>
+                    <div>
+                      <div class="record-timer" id="record-timer">0:00</div>
+                      <div class="record-status" id="record-status">Click to start recording</div>
+                    </div>
+                    <div class="record-controls" id="record-controls" style="display:none;">
+                      <button type="button" class="btn btn-ghost btn-sm" onclick="discardRecording()">Discard</button>
+                    </div>
+                  </div>
+                  <div id="record-preview" class="audio-preview-wrap hidden"></div>
+                </div>
+
+                <!-- Upload UI -->
+                <div id="upload-ui" class="hidden">
+                  <input type="file" id="audio-file-input" accept="audio/*" class="form-control" onchange="onAudioFileSelected(this)">
+                  <div id="upload-preview" class="audio-preview-wrap hidden"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-12" style="justify-content:flex-end; margin-top:4px;">
+              <button type="button" class="btn btn-ghost" onclick="showPanel('announcements')">Cancel</button>
+              <button type="submit" id="create-submit-btn" class="btn btn-primary">
+                <span id="create-btn-text">Publish Announcement</span>
+                <span id="create-spinner" class="spinner hidden"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ─── ANALYTICS PANEL ─────────────────────────────── -->
+      <section id="panel-analytics" class="admin-panel" aria-labelledby="analytics-title">
+        <div class="panel-title" id="analytics-title">Analytics</div>
+        <div class="panel-subtitle">Detailed engagement data per announcement</div>
+
+        <div class="analytics-toolbar">
+          <select id="analytics-ann-select" class="form-control" style="max-width:300px;" onchange="loadAnalyticsData()">
+            <option value="">— Select an Announcement —</option>
+          </select>
+          <input type="date" id="analytics-date-from" class="form-control" style="max-width:150px;" onchange="loadAnalyticsData()">
+          <input type="date" id="analytics-date-to" class="form-control" style="max-width:150px;" onchange="loadAnalyticsData()">
+          <button class="btn btn-secondary btn-sm" onclick="exportAnalyticsCSV()" id="export-csv-btn" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV
+          </button>
+        </div>
+
+        <div id="analytics-content">
+          <div class="empty-state">
+            <span class="empty-icon">📊</span>
+            <h3>Select an Announcement</h3>
+            <p>Choose an announcement above to view its analytics</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── VIEWER TRACKING PANEL ───────────────────────── -->
+      <section id="panel-viewers" class="admin-panel" aria-labelledby="viewers-title">
+        <div class="panel-title" id="viewers-title">Viewer Tracking</div>
+        <div class="panel-subtitle">See which students viewed each announcement</div>
+
+        <div class="viewer-select-row">
+          <label class="form-label">Select Announcement</label>
+          <select id="viewers-ann-select" class="form-control" style="max-width:400px;" onchange="loadViewersData()">
+            <option value="">— Select an Announcement —</option>
+          </select>
+        </div>
+
+        <div id="viewers-content">
+          <div class="empty-state">
+            <span class="empty-icon">👁️</span>
+            <h3>Select an Announcement</h3>
+            <p>Choose an announcement above to see who has viewed it</p>
+          </div>
+        </div>
+      </section>
+
+    </main><!-- /admin-content -->
+  </div><!-- /admin-body -->
+
+  <footer class="page-footer">Made by SHAIK IRFAN</footer>
+  <div id="toast-container"></div>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <!-- Quill -->
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+  <!-- Socket.IO client -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
